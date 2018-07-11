@@ -8,7 +8,7 @@ spec:
     matchLabels:
       app: kafka
   serviceName: "broker"
-  replicas: 3
+  replicas: 5
   updateStrategy:
     type: OnDelete
   template:
@@ -77,6 +77,16 @@ spec:
           name: broker-config
       - name: config
         emptyDir: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - kafka
+            topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
       name: data

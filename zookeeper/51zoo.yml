@@ -73,3 +73,13 @@ spec:
         emptyDir: {}
       - name: data
         emptyDir: {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - zookeeper
+            topologyKey: "kubernetes.io/hostname"
